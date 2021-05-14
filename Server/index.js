@@ -3,13 +3,15 @@ const app = express()
 const dotenv = require("dotenv")
 const morgan = require('morgan')
 dotenv.config();
-
+const cors  = require('cors')
 
 
 // Middlewares
+app.use(cors())
 app.use(morgan("dev"))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
 
 //Routes
 const resRoute = require('./routes/restaurant');
@@ -24,5 +26,5 @@ app.get("/", (req, res) => {
 })
 
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
 app.listen(port, () => console.log(`Listening on port ${port} ... `))
