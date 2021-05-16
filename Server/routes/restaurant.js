@@ -6,7 +6,9 @@ router.post('/restaurant', async(req, res) => {
     try {
         const result = await db.query(
             "INSERT INTO restaurants(name,location,price_range) VALUES($1,$2,$3) returning *", [req.body.name, req.body.location, req.body.price])
-        return res.status(200).json(result)
+        return res.status(200).json({
+            "restaurant": result['rows'][0]
+        })
     } catch (e) {
         return res.status(400).json({
             "message": e
