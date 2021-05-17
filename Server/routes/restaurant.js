@@ -36,8 +36,7 @@ router.get('/restaurant/:id', async(req, res) => {
     try {
         const result = await db.query("SELECT * FROM restaurants WHERE id=$1", [req.params.id])
         return res.status(200).json({
-            "results": result['rowCount'],
-            "restaurant": result["rows"]
+            "restaurant": result["rows"][0]
         })
     } catch (e) {
         return res.status(400).json({
