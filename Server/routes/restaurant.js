@@ -34,9 +34,11 @@ router.get('/restaurant', async(req, res) => {
 // To get a specific restaurant
 router.get('/restaurant/:id', async(req, res) => {
     try {
-        const result = await db.query("SELECT * FROM restaurants WHERE id=$1", [req.params.id])
+        const restaurant = await db.query("SELECT * FROM restaurants WHERE id=$1", [req.params.id])
+        const review = await db.query("SELECT * FROM rating WHERE restaurant_id=$1", [req.params.id])
         return res.status(200).json({
-            "restaurant": result["rows"][0]
+            "restaurant": restaurant["rows"][0],
+            "reviews": review["rows"]
         })
     } catch (e) {
         return res.status(400).json({
@@ -72,5 +74,23 @@ router.delete('/restaurant/:id', async(req, res) => {
         })
     }
 })
+
+
+// Add a review for the restaurant
+
+router.post('/restaurant/:id/review', async(req, res) => {
+    try {
+        const result = await db.query(
+           "INSERT INTO rating(restaurant_id,name,review,rating) VALUES($1,$2,$3,$4) returning *",[req.params.id,req.body.name,req.body.review,req.body.rating])
+        return res.status(200).json({
+            "review": result['rows'][0]
+        })
+    } catch (e) {
+        return res.status(400).json({
+            "message": e
+        })
+    }
+})
+
 
 module.exports = router;
