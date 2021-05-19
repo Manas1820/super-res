@@ -28,4 +28,7 @@ CREATE TABLE rating(
     rating INT NOT NULL check(rating >= 1 and rating <= 5)
 );
 
-INSERT INTO rating(restaurant_id,name,review,rating) VALUES(1,"Manas","Very Nice",3) returning *;
+
+SELECT * FROM rating;
+SELECT * FROM rating WHERE restaurant_id=3;
+INSERT INTO rating(restaurant_id,name,review,rating) VALUES(3,'Pramanu','cool',4) returning *; 
