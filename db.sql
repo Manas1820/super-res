@@ -32,3 +32,9 @@ CREATE TABLE rating(
 SELECT * FROM rating;
 SELECT * FROM rating WHERE restaurant_id=3;
 INSERT INTO rating(restaurant_id,name,review,rating) VALUES(3,'Pramanu','cool',4) returning *; 
+
+SELECT TRUNC(AVG(rating),2) FROM rating WHERE restaurant_id=3;
+SELECT COUNT(id) FROM rating WHERE restaurant_id=3;  
+
+
+SELECT * FROM restaurants LEFT JOIN (select restaurant_id, COUNT(*), TRUNC(AVG(rating),1) AS average_rating FROM rating GROUP BY restaurant_id) rating ON restaurants.id = rating.restaurant_id

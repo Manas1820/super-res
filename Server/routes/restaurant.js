@@ -19,7 +19,7 @@ router.post('/restaurant', async(req, res) => {
 //To get all the restaurants
 router.get('/restaurant', async(req, res) => {
     try {
-        const results = await db.query("SELECT * FROM restaurants")
+        const results = await db.query("SELECT * FROM restaurants LEFT JOIN (select restaurant_id, COUNT(*), TRUNC(AVG(rating),1) AS average_rating FROM rating GROUP BY restaurant_id) rating ON restaurants.id = rating.restaurant_id")
         return res.status(200).json({
             "results": results['rowCount'],
             "restaurant": results["rows"]
